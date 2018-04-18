@@ -28,6 +28,14 @@ services:
             - '@__symfony__.pim_catalog.updater.currency'
             - '@__symfony__.validator'
 
+    test.catalog.product.builder:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Builder\Product'
+        shared: false
+        arguments:
+            - '@__symfony__.pim_catalog.builder.product'
+            - '@__symfony__.pim_catalog.updater.product'
+            - '@__symfony__.validator'
+
     ### Behat context, don't forget to tag them (fob.context_service)
     test.locale.context:
         class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
@@ -47,5 +55,17 @@ services:
             - '@test.category.builder'
             - '@test.channel.builder'
             - '@test.currency.builder'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog.product_value.context:
+        class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductValue'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.attribute'
+            - '@test.catalog.product.builder'
+            - '@__symfony__.pim_catalog.repository.product'
+            - '@__symfony__.pim_catalog.updater.product'
+            - '@__symfony__.validator'
+            - '@__symfony__.pim_catalog.repository.product'
         tags:
             - { name: fob.context_service }
