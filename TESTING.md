@@ -9,26 +9,29 @@ This document aims to help the writing of tests in the PIM. It's the result of t
 
 Let's remind here the characteristics of each type of tests, the tools we must use from now on and give some concrete examples.
 
-### Unit - test a unit of code
+### Specification - describe the behavior of a unit of code
 
 Most of the time, a unit of code is a class.
 
 Characteristics:
 
 - it tests only one class at a time
-- it performs no [I/O call](#faq)
+- it performs no [I/O call](#faq) (in memory only)
 - it doesn't require any setup (no fixtures for instance)
-- it doesn't double what we don't own
-- it "lives" in memory only
 
 Tools:
 
 - backend: PhpSpec
 - frontend: Jest & Enzyme
 
+Where:
+
+- backend: `tests/back/Specification`
+- frontend: TODO
+
 Examples:
 
-- backend: TODO
+- backend: test the service which calculates the completeness of a product
 - frontend: test the dropdown component
 
 ### Acceptance - test a business use case or ensure a business rule
@@ -38,25 +41,28 @@ Characteristics:
 - it tests several classes at the same time
 - it uses the business language, which means _Gherkin_ must be used
 - it describes a business use case or it ensures a business rule (it's not about UI, CLI or UX, neither about a text we should see)
-- it mocks only what we own
-- it mocks services performing [I/O calls](#faq)
-- it "lives" in memory only
+- it fakes services performing [I/O calls](#faq) (in memory only)
 
 Tools:
 
 - backend: Gherkin through Behat (no Mink, no Selenium)
 - frontend: Gherkin through CucumberJS & Puppeteer
 
+Where:
+
+- _Gherkin_: `tests/features`. Same _Gherkin_ files are used for both backend and frontend acceptance tests.
+- backend: `tests/back/Acceptance` contains the Behat contexts
+- frontend: `tests/front/Acceptance` contains the CucumberJS contexts
+
 Examples:
 
-- backend: TODO
-- frontend: TODO
+- backend/frontend: test that the completeness is calculated after having filled in a product value
 
 ### Integration - test the integration of a brick with the outside world
 
 Characteristics:
 
-- it has no mock (it tests the real classes)
+- it has no double (it tests the real classes)
 - it may test several classes at the same time
 - it tests only services that perform [I/O calls](#faq)
 
@@ -64,6 +70,11 @@ Tools:
 
 - backend: PhpUnit
 - frontend: Jest with Puppeteer
+
+Where:
+
+- backend: `tests/back/Integration`
+- frontend: `tests/front/Integration`
 
 Examples:
 
@@ -78,12 +89,16 @@ Characteristics:
 - it treats the application as a black box
 - it has no mock (it tests the real application)
 - it can require a complex setup (like a browser and Selenium for instance)
-- it tests nominal use cases
 - it tests critical use cases
 
 Tools:
 
 - Behat with Mink and Selenium
+
+Where:
+
+- Gherkin: `tests/features`. Same _Gherkin_ files are used for both end to end and acceptance tests.
+- backend: `tests/end-to-end`
 
 Examples:
 
