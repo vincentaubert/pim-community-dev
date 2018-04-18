@@ -110,19 +110,23 @@ Examples:
 
 ### The foundations: ports and adapters
 
-### A slight touch of Domain-Driven Design
 
-Domain-Driven Design follows the same principles that ports and adapters regarding the layers segregation. The most important thing is that no external layer should leak into a deeper layer. The main difference is that it introduces a new layer, which means we end up with:
+
+
+### A slight touch of Onion Architecture
+
+Onion Architecture follows the same principles that ports and adapters regarding the layers segregation. The most important thing is that no external layer should leak into a deeper layer. The main difference is that it introduces a new layer, which means we end up with:
 
 - Domain: it holds the model and all the business logic
 - Application: it orchestrates the Domain and Infrastructure layers. It translates and validates the outside world to the Domain. It is the realm of use cases.
 - Infrastructure: it talks with the outside world. Typically, it persists domain objects and receives user's inputs. This is where we'll find the repository implementations, the frameworks glue, everything that's related databases, HTTP and all the other ports of the system.
 
 
-
 ### The relation with the tests
 
-Unit:
+Once you have those layers in mind, it's easy to know what type of test you should write.
+
+Specification:
 
 - it focuses on the Domain layer
 
@@ -139,10 +143,17 @@ End to end:
 
 - it crosses over all the layers, from an adapter to another by passing through the Domain layer (for instance: Adapter A -> Application -> Domain -> Application -> Adapter B)
 
+TODO: find an image for that
 
 ## Actual vs Expected
 
 ### Today's situation
+
+Let's be honest. Today is a mess. Our goal should be to revamp the `tests/legacy` folder. It contains a lot of end to end tests which should be split into acceptance tests and frontend unit tests. For instance, we have some Behat that test a file has been imported through the UI. We should instead have:
+
+- several acceptance tests that check the import use cases
+- a very few end to end tests that check the CLI
+- frontend unit tests that checks the components of the UI
 
 ### The ideal pyramid
 
