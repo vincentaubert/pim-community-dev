@@ -2,6 +2,7 @@ legacy:
     suites:
         all:
             paths:
+                - '%paths.base%/tests/legacy/features/'
             filters:
                 tags: "~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
             contexts:
