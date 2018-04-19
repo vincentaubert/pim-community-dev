@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7281: Fix inappropriate calls to the cache clearer
+- PIM-7318: correctly detect product models associations
 
 # 2.2.3 (2018-04-12)
 
