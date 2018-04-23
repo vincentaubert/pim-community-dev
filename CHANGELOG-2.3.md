@@ -3,6 +3,11 @@
 ## Improve Julia's experience
 
 - PIM-6897: As Julia, I would like to update the family variant labels from the UI
+- PIM-7302: As Julia, I am not able to delete an attribute option if it's use as variant axis.
+
+## Technical improvements
+
+- Add a 'family_variant' filter in the Product Query Builder with operators 'IN', 'NOT IN', 'EMPTY' and 'NOT EMPTY'.
 
 # 2.3.0-ALPHA1 (2018-04-27)
 
