@@ -27,11 +27,5 @@ services:
     pim_catalog.repository.product_model:
         class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository'
 
-    pim_catalog.repository.attribute_option:
-        class: 'Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository'
-
-    pim_catalog.repository.attribute_option:
-        class: 'Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository'
-
     pim_catalog.repository.attribute_group:
         class: 'Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository'

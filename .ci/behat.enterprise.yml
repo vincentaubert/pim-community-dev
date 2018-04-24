@@ -179,6 +179,8 @@ acceptance:
                 - test.product_asset.asset_context
                 - test.product_asset.asset_category_context
                 - test.product_asset.asset_category_tree_context
+                - test.catalog.product_creation.context
+                - test.catalog.product_validation.context
             filters:
                 tags: '@acceptance-back'
     extensions:
