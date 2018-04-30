@@ -176,7 +176,7 @@ stage("Test") {
             "frontend-acceptance-ce": {
                 if (launchUnitTests.equals("yes") && editions.contains("ce")) {
                     withNode({
-                        sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./tests/features"
+                        sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 node_modules/.bin/cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber tests/features --format=json | node_modules/.bin/cucumber-junit > ${env.WORKSPACE}/junit_output.xml"
                     })
                 } else {
                     echo "Skipping frontend CE acceptance tests"
@@ -185,7 +185,7 @@ stage("Test") {
             "frontend-acceptance-ee": {
                 if (launchUnitTests.equals("yes") && editions.contains("ee")) {
                     withNode({
-                        sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
+                        sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 node_modules/.bin/cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber ./vendor/akeneo/pim-community-dev/tests/features ./tests/features --format=json | node_modules/.bin/cucumber-junit > ${env.WORKSPACE}/junit_output.xml"
                     })
                 } else {
                     echo "Skipping frontend EE acceptance tests"
