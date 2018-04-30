@@ -174,27 +174,27 @@ stage("Test") {
                 }
             },
             "frontend-acceptance-ce": {
-                if (launchUnitTests.equals("yes") && editions.contains("ce")) {
-                    try {
-                        withNode({
-                            sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 node_modules/.bin/cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber tests/features --format=json | node_modules/.bin/cucumber-junit > ${env.WORKSPACE}/junit_output.xml"
-                        })
-                    } finally {
-                        junit "junit_output.xml"
-                    }
+                if (launchUnitTests.equals("yes") && editions.contains("ce")) { 
+                   withNode({
+                       try {
+                           sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 node_modules/.bin/cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber tests/features --format=json | node_modules/.bin/cucumber-junit > ${env.WORKSPACE}/junit_output.xml"
+                       } finally {
+                           junit "junit_output.xml"
+                       }
+                   }) 
                 } else {
                     echo "Skipping frontend CE acceptance tests"
                 }
             },
             "frontend-acceptance-ee": {
                 if (launchUnitTests.equals("yes") && editions.contains("ee")) {
-                    try {
-                        withNode({
+                    withNode({
+                        try {
                             sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 node_modules/.bin/cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber ./vendor/akeneo/pim-community-dev/tests/features ./tests/features --format=json | node_modules/.bin/cucumber-junit > ${env.WORKSPACE}/junit_output.xml"
-                        })
-                    } finally {
-                         junit "junit_output.xml"
-                    }
+                        } finally {
+                            junit "junit_output.xml"
+                        }
+                    })
                 } else {
                     echo "Skipping frontend EE acceptance tests"
                 }
