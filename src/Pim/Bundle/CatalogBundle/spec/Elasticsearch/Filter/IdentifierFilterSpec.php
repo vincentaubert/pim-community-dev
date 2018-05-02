@@ -12,7 +12,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 class IdentifierFilterSpec extends ObjectBehavior
 {
@@ -197,10 +196,11 @@ class IdentifierFilterSpec extends ObjectBehavior
     function it_adds_an_attribute_filter_with_operator_starts_with(SearchQueryBuilder $sqb, AttributeInterface $sku)
     {
         $sku->getCode()->willReturn('sku');
-        $sqb->addFilter(
-            [
+        $sku->getBackendType()->willReturn('text');
+
+        $sqb->addFilter([
                 'query_string' => [
-                    'default_field' => 'identifier',
+                    'default_field' => 'values.sku-text.<all_channels>.<all_locales>',
                     'query'         => 'sku-*',
                 ],
             ]
@@ -213,10 +213,12 @@ class IdentifierFilterSpec extends ObjectBehavior
     function it_adds_an_attribute_filter_with_operator_contains(SearchQueryBuilder $sqb, AttributeInterface $sku)
     {
         $sku->getCode()->willReturn('sku');
+        $sku->getBackendType()->willReturn('text');
+
         $sqb->addFilter(
             [
                 'query_string' => [
-                    'default_field' => 'identifier',
+                    'default_field' => 'values.sku-text.<all_channels>.<all_locales>',
                     'query'         => '*001*',
                 ],
             ]
@@ -229,10 +231,11 @@ class IdentifierFilterSpec extends ObjectBehavior
     function it_adds_an_attribute_filter_with_operator_not_contains(SearchQueryBuilder $sqb, AttributeInterface $sku)
     {
         $sku->getCode()->willReturn('sku');
+        $sku->getBackendType()->willReturn('text');
         $sqb->addFilter(
             [
                 'exists' => [
-                    'field' => 'identifier',
+                    'field' => 'values.sku-text.<all_channels>.<all_locales>',
                 ],
             ]
         )->shouldBeCalled();
@@ -240,7 +243,7 @@ class IdentifierFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'query_string' => [
-                    'default_field' => 'identifier',
+                    'default_field' => 'values.sku-text.<all_channels>.<all_locales>',
                     'query'         => '*001*',
                 ],
             ]
@@ -253,10 +256,11 @@ class IdentifierFilterSpec extends ObjectBehavior
     function it_adds_an_attribute_filter_with_operator_equals(SearchQueryBuilder $sqb, AttributeInterface $sku)
     {
         $sku->getCode()->willReturn('sku');
+        $sku->getBackendType()->willReturn('text');
         $sqb->addFilter(
             [
                 'term' => [
-                    'identifier' => 'sku-001',
+                    'values.sku-text.<all_channels>.<all_locales>' => 'sku-001',
                 ],
             ]
         )->shouldBeCalled();
@@ -268,10 +272,11 @@ class IdentifierFilterSpec extends ObjectBehavior
     function it_adds_an_attribute_filter_with_operator_not_equal(SearchQueryBuilder $sqb, AttributeInterface $sku)
     {
         $sku->getCode()->willReturn('sku');
+        $sku->getBackendType()->willReturn('text');
         $sqb->addMustNot(
             [
                 'term' => [
-                    'identifier' => 'sku-001',
+                    'values.sku-text.<all_channels>.<all_locales>' => 'sku-001',
                 ],
             ]
         )->shouldBeCalled();
@@ -279,7 +284,7 @@ class IdentifierFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'exists' => [
-                    'field' => 'identifier',
+                    'field' => 'values.sku-text.<all_channels>.<all_locales>',
                 ],
             ]
         )->shouldBeCalled();
@@ -291,10 +296,11 @@ class IdentifierFilterSpec extends ObjectBehavior
     function it_adds_an_attribute_filter_with_operator_in_list(SearchQueryBuilder $sqb, AttributeInterface $sku)
     {
         $sku->getCode()->willReturn('sku');
+        $sku->getBackendType()->willReturn('text');
         $sqb->addFilter(
             [
                 'terms' => [
-                    'identifier' => ['sku-001'],
+                    'values.sku-text.<all_channels>.<all_locales>' => ['sku-001'],
                 ],
             ]
         )->shouldBeCalled();
@@ -306,10 +312,11 @@ class IdentifierFilterSpec extends ObjectBehavior
     function it_adds_an_attribute_filter_with_operator_not_in_list(SearchQueryBuilder $sqb, AttributeInterface $sku)
     {
         $sku->getCode()->willReturn('sku');
+        $sku->getBackendType()->willReturn('text');
         $sqb->addMustNot(
             [
                 'terms' => [
-                    'identifier' => ['sku-001'],
+                    'values.sku-text.<all_channels>.<all_locales>' => ['sku-001'],
                 ],
             ]
         )->shouldBeCalled();
@@ -406,6 +413,7 @@ class IdentifierFilterSpec extends ObjectBehavior
         AttributeInterface $sku
     ) {
         $sku->getCode()->willReturn('sku');
+        $sku->getBackendType()->willReturn('text');
         $this->setQueryBuilder($sqb);
 
         $this->shouldThrow(
