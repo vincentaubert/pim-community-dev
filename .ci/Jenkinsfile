@@ -174,14 +174,14 @@ stage("Test") {
                 }
             },
             "frontend-acceptance-ce": {
-                if (launchUnitTests.equals("yes") && editions.contains("ce")) { 
+                if (launchUnitTests.equals("yes") && editions.contains("ce")) {
                    withNode({
                        try {
                            sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 node_modules/.bin/cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber tests/features --format=json | node_modules/.bin/cucumber-junit > ${env.WORKSPACE}/junit_output.xml"
                        } finally {
                            junit "junit_output.xml"
                        }
-                   }) 
+                   })
                 } else {
                     echo "Skipping frontend CE acceptance tests"
                 }
@@ -194,7 +194,7 @@ stage("Test") {
                         } finally {
                             junit "junit_output.xml"
                         }
-                    })
+                    }, "ee")
                 } else {
                     echo "Skipping frontend EE acceptance tests"
                 }
@@ -202,7 +202,11 @@ stage("Test") {
             "frontend-integration-ce": {
                 if (launchUnitTests.equals("yes") && editions.contains("ce")) {
                     withNode({
-                        sh "cd /home/jenkins/pim && yarn run webpack-test && yarn run integration"
+                        try {
+                            sh "cd /home/jenkins/pim && yarn run webpack-test && JEST_JUNIT_OUTPUT=${env.WORKSPACE}/junit_output.xml node_modules/.bin/jest --no-cache --config ./tests/front/integration/jest/integration.jest.js --ci --testResultsProcessor='jest-junit'"
+                        } finally {
+                            junit "junit_output.xml"
+                        }
                     })
                 } else {
                     echo "Skipping frontend CE integration tests"
@@ -211,7 +215,11 @@ stage("Test") {
             "frontend-integration-ee": {
                 if (launchUnitTests.equals("yes") && editions.contains("ee")) {
                     withNode({
-                        sh "cd /home/jenkins/pim && yarn run webpack-test && yarn run integration"
+                        try {
+                            sh "cd /home/jenkins/pim && yarn run webpack-test && JEST_JUNIT_OUTPUT=${env.WORKSPACE}/junit_output.xml node_modules/.bin/jest --no-cache --config ./tests/front/integration/jest/integration.jest.js --ci --testResultsProcessor='jest-junit'"
+                        } finally {
+                            junit "junit_output.xml"
+                        }
                     }, "ee")
                 } else {
                     echo "Skipping frontend EE integration tests"
@@ -220,7 +228,11 @@ stage("Test") {
             "frontend-unit-ce": {
                 if (launchUnitTests.equals("yes") && editions.contains("ce")) {
                     withNode({
-                        sh "cd /home/jenkins/pim && yarn run unit"
+                        try {
+                            sh "cd /home/jenkins/pim && JEST_JUNIT_OUTPUT=${env.WORKSPACE}/junit_output.xml node_modules/.bin/jest --no-cache --config tests/front/unit/jest/unit.jest.js --ci --testResultsProcessor='jest-junit'"
+                        } finally {
+                             junit "junit_output.xml"
+                        }
                     })
                 } else {
                     echo "Skipping frontend CE unit tests"
@@ -229,7 +241,11 @@ stage("Test") {
             "frontend-unit-ee": {
                 if (launchUnitTests.equals("yes") && editions.contains("ee")) {
                     withNode({
-                        sh "cd /home/jenkins/pim && yarn run unit"
+                        try {
+                            sh "cd /home/jenkins/pim && JEST_JUNIT_OUTPUT=${env.WORKSPACE}/junit_output.xml node_modules/.bin/jest --no-cache --config tests/front/unit/jest/unit.jest.js --ci --testResultsProcessor='jest-junit'"
+                        } finally {
+                             junit "junit_output.xml"
+                        }
                     }, "ee")
                 } else {
                     echo "Skipping frontend EE unit tests"
