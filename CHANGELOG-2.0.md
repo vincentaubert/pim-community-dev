@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7335: Fix locale rendering on product form completeness panel
+
 # 2.0.23 (2018-04-30)
 
 ## Bug fixes
